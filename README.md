@@ -48,6 +48,7 @@ sort -g produk.txt | cut -f2- -d ' '| head -10
 
 ## 01A.
 
+Code:<br> 
 `awk -F '\t' -f 1a.awk Sample-Superstore.tsv`
 
 Dimana isi dari source code `1a.awk` sendiri yaitu:
@@ -111,7 +112,22 @@ print "Wilayah Bagian: " nama,"\nDengan Profit : " min
 ### Keterangan:
 
 * `{ if($13 == "South"){jmlsouth+=$21;} if($13 == "West"jmlwest+=$21;} if($13 == "Central"){jmlcentral+=$21;} if($13 == "East"){jmleast+=$21}}` Pada line 57-73 berfungsi untuk menjumlahkan *profit* dari setiap *region* kemudian dimasukkan ke dalam variabel *sum*.
-*
+
+* `END {minA = 0;minB = 0;` Pada line 75-77 merupakan bagian darin *end* block, dimana kemudian dikenalkan variabel minA dan minB terlebih dahulu.
+
+* `if(jmlsouth < jmlwest){minA = jmlsouth;namaRegionA ="South";} else if(jmlsouth > jmlwest){minA = jmlwest;
+namaRegionA = "West";} if(jmlcentral < jmleast){minB =jmlcentral;namaRegionB = "Central";} else if(jmlcentral >jmleast){minB = jmleast;namaRegionB = "East";} if(minA < minB){ min = minA; nama = namaRegionA;} else if(minA > minB{min = minB;nama = namaRegionB;}` pada line 79-104 jumlah antar *region* dibandingkan. Dimana region dengan *provit* paling rendah akan masuk ke dalam variabel minA dan minB untuk kemudian dibandingkan lagi.
+
+* `print "Wilayah Bagian: " nama,"\nDengan Profit : " min}` Pada line 106-107 akan menampilkan (print) *region* dengan jumlah provit terkecil.
 
 
+
+## 01B.
+
+Code:<br>
+`awk -F '\t' '$13 ~ /Central/ {profit[$11]+=$21;} END{for(state in profit){print profit[state],state;}}' Sample-Superstore.tsv | sort -n | awk '{print $2}' | head -2` 
+
+### Keterangan:
+
+* Fungsi `awk -F '\t'` yaitu menerangkan bahwa field separatornya berupa Tab.
 
